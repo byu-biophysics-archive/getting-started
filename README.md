@@ -1,8 +1,8 @@
 
 # Welcome to the BYU Biophysics Group !
-Here at the BYU Biophysics research group we are seeking to understand the fundamental processes of life. We model these processes on the computer and compare with cryo-EM images. Prokaryotic cells are our current focus because of the large database of tomograms that are available. 
+The BYU Biophysics research group studies fundamental processes of life. We model these processes on the computer and compare with cryo-EM images. Prokaryotic cells are our current focus because of the large database of tomograms that are available. 
 
-We use the julia programmming language, which provides a solution to the "two-language problem". By understandin basic processes, our ultimate goal is to contribute to the general knowledge of human function and thus impact medical and preventitive treatment to improve human health.
+We use the julia programmming language, which provides a solution to the "two-language problem". By understanding basic life processes, our ultimate goal is to contribute to the general knowledge of human function and thus impact medical and preventitive treatment to improve human health.
 
  Below you will find all the information you need to get started! 
 
@@ -41,7 +41,7 @@ As mentioned above we have chosen to work in the Julia programing language! In t
 * [Random walk Julia tutorial](https://sje30.github.io/catam-julia/casestudies/randomwalks/randomwalksnotebook.html)
 
 # BYU Supercomputing
-In order to run the simulation software we make use of the BYU supercomputing lab. You can find more information about that as well as apply for a supercomputing account [here](https://rc.byu.edu/)
+In order to run the simulation software we make use of the BYU supercomputing lab. You can find more information about that as well as apply for a supercomputing account [here](https://rc.byu.edu/).
 
 To learn how to setup a remote environment in VS Code, click [here](/supercomputer/VScode_setup.md).
 

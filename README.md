@@ -43,7 +43,7 @@ As mentioned above we have chosen to work in the Julia programing language! In t
 # BYU Supercomputing
 In order to run the simulation software we make use of the BYU supercomputing lab. You can find more information about that as well as apply for a supercomputing account [here](https://rc.byu.edu/)
 
-To learn how to setup a remote environment in VS Code, click [here](/supercomputer/VScode_setup.md)
+To learn how to setup a remote environment in VS Code, click [here](/supercomputer/VScode_setup.md).
 
 # Getting Started with random walks 
 A random walk is a simple model of fundamental biological processes and is a great place to start doing biophysics simulations.
@@ -70,3 +70,7 @@ A random walk is a simple model of fundamental biological processes and is a gre
 ## Problem # 5
 
 * [Natural Pendulum (3.3)](resources/Giordano_chap_3.pdf) problem from Giordano's textbook. Helpful in beginning to learn about chaotic motion as well as realistic harmonic motion. Take a look at problem 3.1 and 3.2 before as well for an introduction into simple harmonic motion.
+
+## Problem # 6
+
+* [Molecular Dynamics (9.1)](resources/Giordano_Chap_9.pdf) problem from Giordano's textbook is the culmination of the coding exercises we have worked on up until this point. You will be coding a realistic simulation of gas molecules acting according to the Lennart-Jones Potential relationship. Do your best to work through it, and for an easier starting exercise you can try and work through the simulation with elastic boundaries instead of periodic boundary conditions as it is there most bugs develop. 

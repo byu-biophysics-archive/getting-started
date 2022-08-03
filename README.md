@@ -43,6 +43,8 @@ As mentioned above we have chosen to work in the Julia programing language! In t
 # BYU Supercomputing
 In order to run the simulation software we make use of the BYU supercomputing lab. You can find more information about that as well as apply for a supercomputing account [here](https://rc.byu.edu/).
 
+To get a basic understanding of what the supercomputer does and how to use it, check out [this seminar](https://www.youtube.com/watch?v=GlV9anm5OMg) put on by BYU's Supercomputer channel. 
+
 To learn how to setup a remote environment in VS Code, click [here](/supercomputer/VScode_setup.md).
 
 # Getting Started with random walks 

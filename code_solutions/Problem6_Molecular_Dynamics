@@ -1,0 +1,174 @@
+using Plots
+using Random
+
+"""
+Ideas:
+The vander waals forces make it so that atoms are weakly attracted to each other until they get close enough that their electron
+rings overlap and the forces become very strongly repulsive, in theory causing a "colision" between two molecules. Thus all the atoms
+floating around are in theory interacting with each other and causing each other to act in different ways. The motion of atoms is
+thus "random" but also not really random because there are laws that govern the interactions
+"""
+
+"""
+Coding: 
+Two four loops, outer being the first particle in the interaction, the second being the second particle, and we iterate through 
+all the particle pairs and calculate the resulting net force vector from each of the interacting pairs according to the laws given
+in the textbook. We push the forces onto a net forces vector and then after each of the interactions have been recorded only then can
+we update the positions and velocities of each of the particles due to the respective net force because if we don't then the 
+movement will skew the other net forces. More about the constants sigma and epsilom? Leanard-Jones?     
+"""
+
+Random.seed!(124) #same random seed so simulation is consistent
+N = 100000 #num time steps
+n = 100 #num particles
+l = 33 #length of box
+dt = .0015 #time step
+vmax = 1
+anim = Animation()
+# ε = 1
+# σ = 1 keep in terms of the constants 
+
+grid = (l-4.5)/sqrt(n)
+pos = zeros(n, 2)
+colors = [:turquoise for i in 1:n]
+colors[55] = :coral
+
+# ---- Initialize ---- #
+#set up lattice structure
+for i in 1:Int(sqrt(n))
+    local x = grid*(i-1) + 4
+    for j in 1:Int(sqrt(n))
+        pos[(i-1)*Int(sqrt(n))+j,2] = grid*(j-1) + 4
+        pos[(i-1)*Int(sqrt(n))+j,1] = x
+    end
+end
+
+#Displace particles slightly 
+for i in 1:n 
+    pos[i,1] += rand()-.5
+    pos[i,2] += rand()-.5
+end
+
+#randomize initial velocities
+vx = [2(rand()-0.5)*vmax for i in 1:n]
+vy = [2(rand()-0.5)*vmax for i in 1:n]
+
+#define position previous to initial
+xprev = zeros(n,1)
+yprev = zeros(n,1)
+for i in 1:n
+    xprev[i] = pos[i,1] - vx[i]*dt
+    yprev[i] = pos[i,2] - vy[i]*dt
+end
+#println(xprev, yprev)
+#display(scatter(xprev,yprev,legend=:none))
+
+# ---- Update ---- #
+
+fnetx = zeros(n,1)
+fnety = zeros(n,1)
+for k in 1:N
+    for i in 1:n
+        fnetx[i] = 0
+        fnety[i] = 0
+        for j in 1:n 
+            if i == j
+                continue
+            end
+            #for each i, calculate distance rx and ry
+            rx = pos[i,1]-pos[j,1]
+            ry = pos[i,2]-pos[j,2]
+            if abs(rx) > l/2
+                rx < 0 ? rx += l : rx -= l
+            end
+            if abs(ry) > l/2
+                ry < 0 ? ry += l : ry -= l
+            end
+            #=
+            rx1 = (l-pos[i,1])+(pos[j,1])
+            rx2 = (l-pos[j,1])+(pos[i,1])
+            #(abs(rx1) < abs(rx) || abs(rx2) < abs(rx)) ? rx = min(abs(rx1),abs(rx2)) :
+            if abs(rx1) < abs(rx)
+                rx = rx1
+            end
+            if abs(rx2) < abs(rx)
+                rx = rx2
+            end
+
+            
+            ry1 = (l-pos[i,2]) + pos[j,2]
+            ry2 = (l-pos[j,2]) + pos[i,2]
+            #(abs(ry1) < abs(ry) || abs(ry2) < abs(ry))  ? ry = min(abs(ry1),abs(ry2)) :
+            if abs(ry1) < abs(ry)
+                ry = ry1
+            end
+            if abs(ry2) < abs(ry)
+                ry = ry2
+            end
+            =#
+            
+            #calculate r and test if more than 3 away
+            r = (sqrt((rx^2) + (ry^2)))
+            #println(r)
+            #println("$rx in x and $ry in y gives $r")
+            #calculate force because of singular particle
+            if r >= 3
+                continue
+            end
+
+            f = 24((2/(r^13))-(1/(r^7)))
+            #add to net force vector
+            fnetx[i] += f*(rx/r)
+            fnety[i] += f*(ry/r)
+        end
+    end
+
+    for i in 1:n
+        #=
+        temp1 = pos[i,1]
+        pos[i,1] = 2*pos[i,1] - xprev[i] + fnetx[i]*(dt^2)
+        xprev[i] = temp1
+        #println("fnet[x]:$fnetx[i]")
+
+        temp2 = pos[i,2]
+        pos[i,2] = 2*pos[i,2] - yprev[i] + fnety[i]*(dt^2)
+        yprev[i] = temp2
+        =#
+
+        vx[i] = (pos[i,1] - xprev[i])/(2*dt)
+        vy[i] = (pos[i,2] - yprev[i])/(2*dt)
+
+        if pos[i,1] >= l
+            pos[i,1] -= l
+            xprev[i] -= l
+        elseif pos[i,1] <= 0
+            pos[i,1] += l
+            xprev[i] += l
+        end
+        
+        if pos[i,2] >= l
+            pos[i,2] -= l
+            yprev[i] -= l
+        elseif pos[i,2] <= 0
+            pos[i,2] += l
+            yprev[i] += l
+        end
+
+        temp1 = pos[i,1]
+        pos[i,1] = 2*pos[i,1] - xprev[i] + fnetx[i]*(dt^2)
+        xprev[i] = temp1
+        #println("fnet[x]:$fnetx[i]")
+
+        temp2 = pos[i,2]
+        pos[i,2] = 2*pos[i,2] - yprev[i] + fnety[i]*(dt^2)
+        yprev[i] = temp2
+    end
+    if (k%20) == 0
+        display(scatter([pos[:,1]], [pos[:,2]], aspect_ratio = 1, legend = :none, 
+        xlims = (0,l), ylims = (0,l), title = "Molecular Dynamics", markersize = 4.5,
+        framestyle = :box, xaxis = nothing, yaxis = nothing, grid = false, color = colors))
+        frame(anim)
+    end
+end
+
+gif(anim)
